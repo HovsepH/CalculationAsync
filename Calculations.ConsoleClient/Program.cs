@@ -17,7 +17,21 @@ namespace Calculations.ConsoleClient
         {
             while (true)
             {
-                throw new NotImplementedException();
+                using var cts = new CancellationTokenSource();
+                if (int.TryParse(Console.ReadLine(), out int n))
+                {
+                    var progress = new Progress<(int, long)>(i =>
+                    {
+                        Console.Write("number: " + i.Item1);
+                        Console.WriteLine("sum:" + i.Item2);
+                    });
+
+                    await Calculator.CalculateSumAsync(n, cts.Token, progress);
+                }
+                else
+                {
+                    break;
+                }
             }
         }
     }
